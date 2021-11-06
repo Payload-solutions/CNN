@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9cfd5f6336b39241bdc2fe5d037963dc8ce8761c3387e8ce46fc3fd0392673fc"
+            "sha256": "d9685fce6a9773dfecdb2952729a5379cfc75d52e682bfe4967a83a04c02736f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -71,6 +71,14 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==1.1.2"
+        },
+        "imageio": {
+            "hashes": [
+                "sha256:469c59fe71c81cdc41c84f842d62dd2739a08fac8cb85f5a518a92a6227e2ed6",
+                "sha256:93ee376a8dc96182ead8d773c3ac2becf79c6f2b93d38f31d7ac036c62a6c72e"
+            ],
+            "index": "pypi",
+            "version": "==2.10.3"
         },
         "msgpack": {
             "hashes": [

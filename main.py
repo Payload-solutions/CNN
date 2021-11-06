@@ -3,23 +3,28 @@
 import os
 from PIL import Image
 from torch import nn
-from pprint import pprint
-class Dataset(nn.Module):
-    pass
-
+import torch
+import imageio
 
 BASE_DIR = "images/"
 
 
-def load_images():
+def read_image_as_tensor():
     
     dir_images = [x for x in os.listdir(BASE_DIR)]
-    pprint(len(dir_images))
+    
+    for x in dir_images:
+        image = imageio.imread((os.path.join(BASE_DIR, x)))
+        print(torch.from_numpy(image).float(), "\n")
+        tensor_image = torch.from_numpy(image).float() / 255
+
+        print(tensor_image)
+        break
 
 
 
 def main():
-    load_images()
+    read_image_as_tensor()
 
 
 if __name__ == "__main__":
