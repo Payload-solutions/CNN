@@ -1,5 +1,6 @@
 """Class for testing the architecture"""
 
+from pprint import pprint
 import os
 from os.path import join
 import torch
@@ -75,10 +76,11 @@ class BacteriaDataset(Dataset):
         files = os.listdir(path)
 
         self.filenames = [join(path, file) for file in files if file.endswith(".png")]
-        self.targets = [int(f[0]) for f in files]
-        self.transform = transform
-
-    def __len__(self):
+        # self.targets = [int(f[0]) for f in files]
+        print(files)
+        # self.transform = transform
+        pprint(self.filenames)
+    """def __len__(self):
         return len(self.filenames)
 
     def __getitem__(self, item):
@@ -87,10 +89,11 @@ class BacteriaDataset(Dataset):
         if self.transform:
             image = self.transform(image)
         return image, self.targets[item]
-
+    """
 
 def main():
-    pass
+    bacteria = BacteriaDataset(base_dir="images")
+    
 
 
 if __name__ == "__main__":
