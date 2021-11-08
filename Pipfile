@@ -9,6 +9,8 @@ torchvision = "*"
 torchaudio = "*"
 pynvim = "*"
 imageio = "*"
+pandas = "*"
+numpy = "*"
 
 [dev-packages]
 
