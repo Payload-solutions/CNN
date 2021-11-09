@@ -1,5 +1,6 @@
 """Class for testing the architecture"""
 
+import re
 from pprint import pprint
 import os
 from os.path import join
@@ -96,14 +97,42 @@ class BacteriaDataset(Dataset):
 
 
 def load_numeric_dataset():
-    dataset = pd.read_csv("datasets/milk-properties.csv")
-    print(dataset)
+    r"""We gonna make possible the permutation of the image name
+    to can match with the numeric dataset
+    getting the first match using iloc, we can get the first row
 
+    [
+    'streptococcus_initial_strain_cfu_ml'
+    'lactobacillus_initial_strain_cfu_ml' 
+    'ideal_temperature_c'
+    'minimum_milk_proteins'
+    'titratable_acidity' 
+    'pH_milk_sour_'
+    'fat_milk_over_100mg_' 
+    'quality_product'
+    ]
+    
+    >>> dataset.iloc[0].to_numpy() => :
+    [4.693 5.376 40.593 2.622 1.171 4.539 1.8156 'Low fat yogurt']
+
+    """
+
+    base_dir = "datasets/train_bacteria"
+    files = os.listdir(base_dir)
+
+    print("size of the images: ", len(files))
+    files.sort()
+
+    key_values = [re.search(r'\d{1,3}', x).group() for x in files]
+
+    dataset = pd.read_csv("datasets/milk-properties.csv")
+    print(dataset.columns.to_numpy())
+    # print(dataset.iloc[0].to_numpy())
 
 
 def main():
-    bacteria = BacteriaDataset(base_dir="images")
-    
+    # bacteria = BacteriaDataset(base_dir="images")
+    load_numeric_dataset()
 
 
 if __name__ == "__main__":
