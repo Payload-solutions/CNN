@@ -116,13 +116,13 @@ def load_numeric_dataset():
     [4.693 5.376 40.593 2.622 1.171 4.539 1.8156 'Low fat yogurt']
 
     """
-    base_dir = "datasets/train_bacteria"
+    base_dir = "datasets/image_train"
     files = os.listdir(base_dir)
     files.sort()
     key_values = [re.search(r'\d{1,4}', x).group() for x in files if re.search(r'\d{1,4}',x)]
     dataset = pd.read_csv("datasets/milk-properties.csv")
     print("[*] Dataset finished created successfully...")
-    dataset.iloc[key_values[:]].to_csv("datasets/train_bacteria/train-milk-properties.csv", index=False)
+    dataset.iloc[key_values[:]].to_csv("datasets/image_train/train-milk-properties.csv", index=False)
 
 
 def main():
