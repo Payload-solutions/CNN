@@ -1,12 +1,21 @@
 
-
+import warnings
 import os
 from PIL import Image
 from torch import nn
 import torch
 import imageio
+import os
+import tensorflow as tf
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-BASE_DIR = "images/"
+# In detail:-
+# 0 = all messages are logged (default behavior)
+# 1 = INFO messages are not printed
+# 2 = INFO and WARNING messages are not printed
+# 3 = INFO, WARNING, and ERROR messages are not printed
+
+"""BASE_DIR = "images/"
 
 
 def read_image_as_tensor():
@@ -22,9 +31,10 @@ def read_image_as_tensor():
         break
 
 
-
+"""
 def main():
-    read_image_as_tensor()
+    # read_image_as_tensor()
+    print(tf.__version__)
 
 
 if __name__ == "__main__":

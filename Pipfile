@@ -11,6 +11,7 @@ pynvim = "*"
 imageio = "*"
 pandas = "*"
 numpy = "*"
+tensorflow = "*"
 
 [dev-packages]
 
