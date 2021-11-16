@@ -22,15 +22,17 @@ import os
 
 
 def load_image_size():
-    base_dir = "test_bacteria/"
-    locate_dir = "image_test"
+    base_dir = "joselyn_images/"
+    locate_dir = "pin_images"
     files = os.listdir(base_dir)
 
     for num, x in enumerate(files):
         image = Image.open(os.path.join(base_dir, x))
+        # image_rotate = image.rotate(90)
+        # grey_scale = image_rotate.convert('L')
         # print(image.size)
-        new_image = image.resize((64,64))
-        new_image.save(f'{locate_dir}/{num}_bacteria.png')
+        # new_image = grey_scale.resize((64,64))
+        image.save(f'{locate_dir}/{num+25}_bacteria.png')
 
 
 
