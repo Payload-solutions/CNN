@@ -7,13 +7,16 @@ from PIL import Image
 import pandas as pd
 from torch import nn
 from torch.nn import functional as F
-
+import torch
 BASE_DIR: str = "datasets/image_train"
 BASE_DATASET: str = "datasets/train-milk-properties.csv"
 from torch.utils.data import (
     DataLoader,
     Dataset
 )
+import torchvision.transforms as transforms
+from torch import optim
+
 
 class ImageNet(nn.Module):
 
@@ -94,6 +97,20 @@ class ImageDataset(Dataset):
         return image, self.targets[item]
 
 
+class RunningMetrics:
+    def __init__(self):
+        self.S = 0
+        self.N = 0
+
+    def update(self, val, size):
+        self.S += val
+        self.N += size
+    
+    def __call__(self):
+        return self.S/float(self.N)
+
+
+
 # def match_image_dataset() -> Any:
 #     dataset = pd.read_csv(BASE_DATASET)
 #     files_names = sorted([x for x in os.listdir(BASE_DIR)])
@@ -109,12 +126,43 @@ class ImageDataset(Dataset):
 
 
 def main():
-    # match_image_dataset()
-    # load_dataset()
-    # image_net = ImageNet(num_channels=)
+    image_dataset = ImageDataset(base_dir="datasets", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
 
-    image_dataset = ImageDataset(base_dir="datasets", split="train" ,dataset_base=BASE_DATASET)
-    print(len(image_dataset))
+    dataloader = DataLoader(image_dataset, batch_size=8)
+    # print(len(image_dataset))
+
+    net = ImageNet(32)
+    loss_fn = nn.NLLLoss()
+    optimizer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9)
+
+    num_epochs = 100
+
+    for epoch in range(num_epochs):
+        print(f"{epoch}/{num_epochs}")
+        print("-"*15)
+
+        running_loss = RunningMetrics()
+        running_acc = RunningMetrics()
+
+        for inputs, targets  in dataloader:
+
+            optimizer.zero_grad()
+
+            outputs = net(inputs)
+
+            _, pred = torch.max(outputs, 1)
+
+            loss = loss_fn(outputs, targets)
+
+            loss.backward()
+            optimizer.step()
+
+            batch_size = inputs.size()[0]
+            running_loss.update(loss.item()*batch_size, batch_size)
+
+            running_acc.update(torch.sum(pred == targets).float(), batch_size)
+        
+        print(f"Loss {running_loss()}   Acc{running_acc()}" )
 
 if __name__ == "__main__":
     main()
