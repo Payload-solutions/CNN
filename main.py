@@ -22,11 +22,21 @@ the new images generated and converted, will be
 stored in the temporal folder
 """
 def image_handling():
-    pass
+    
+    base_dir = "images/"
+    new_dir = "temporal/"
+    
+    files = [value for value in os.listdir(base_dir)]
+    for pos, file in enumerate(files):
+        image = Image.open(os.path.join(base_dir, file))
+        new_image = image.resize((64,64))
+        new_image.save(new_dir+f"{pos}_train.png")
 
 
 
-
+def main():
+    # image_handling()
+    matching_shapes()
 
 
 
@@ -35,22 +45,21 @@ class ImageDataset(nn.Module):
         super(ImageDataset, self).__init__()
 
 
-def main():
+def matching_shapes():
     # read_image_as_tensor()
 
     # image_dataset = ImageDataset()
     
-    image_files = [file for file in os.listdir("64x64_SIGNS/train_signs/")]
-    another_files = [file for file in os.listdir("datasets/image_train/")]
+    # image_files = [file for file in os.listdir("64x64_SIGNS/train_signs/")]
+    # another_files = [file for file in os.listdir("datasets/image_train/")]
 
-    test_files = [file for file in os.listdir("datasets/test_bacteria/")]
+    test_files = [file for file in os.listdir("temporal/")]
 
     for x in test_files:
-        read_image = imageio.imread(os.path.join("datasets/test_bacteria", x))
-        if torch.from_numpy(read_image).float().shape == (64,64,3):
-            print(x)
+        read_image = imageio.imread(os.path.join("temporal/", x))
+        print(torch.from_numpy(read_image).float().shape)
 
-    for x in another_files:
+    """for x in another_files:
         read_image = imageio.imread(os.path.join("datasets/image_train/", x))
         if torch.from_numpy(read_image).float().shape == (64,64,3):
             print(x)
@@ -61,7 +70,7 @@ def main():
         print(torch.from_numpy(read_image).float().shape)
         
         if pos == 100:
-            break
+            break"""
 
 if __name__ == "__main__":
     main()
