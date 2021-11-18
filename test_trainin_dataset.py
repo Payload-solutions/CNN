@@ -111,18 +111,26 @@ class RunningMetrics:
 
 
 def main():
-    image_dataset = ImageDataset(base_dir="datasets", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
+    try:
+        image_dataset = ImageDataset(base_dir="datasets", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
 
-    dataloader = DataLoader(image_dataset, batch_size=8)
-    # print(len(image_dataset))
+        dataloader = DataLoader(image_dataset, batch_size=8)
+        # print(len(image_dataset))
 
-    net = ImageNet(32)
-    loss_fn = nn.NLLLoss()
-    optimizer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9)
+        net = ImageNet(32)
+        loss_fn = nn.NLLLoss()
+        optimizer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9)
 
-    num_epochs = 100
+        num_epochs = 100
 
-    for epoch in range(num_epochs):
+        for inputs, targets in dataloader:
+            print(f"Inputs: {inputs} Targets: {targets}")
+            break
+
+    except Exception as e:
+        print(f"Problems calculating the values by:\n{str(e)}")
+
+    """for epoch in range(num_epochs):
         print(f"{epoch}/{num_epochs}")
         print("-"*15)
 
@@ -147,7 +155,7 @@ def main():
 
             running_acc.update(torch.sum(pred == targets).float(), batch_size)
         
-        print(f"Loss {running_loss()}   Acc{running_acc()}" )
+        print(f"Loss {running_loss()}   Acc{running_acc()}" )"""
 
 if __name__ == "__main__":
     main()

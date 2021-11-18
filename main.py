@@ -1,41 +1,53 @@
 
-import warnings
+# import warnings
 import os
 from PIL import Image
 from torch import nn
 import torch
 import imageio
 import os
-import tensorflow as tf
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
-# In detail:-
-# 0 = all messages are logged (default behavior)
-# 1 = INFO messages are not printed
-# 2 = INFO and WARNING messages are not printed
-# 3 = INFO, WARNING, and ERROR messages are not printed
-
-"""BASE_DIR = "images/"
+from pprint import pprint
 
 
-def read_image_as_tensor():
-    
-    dir_images = [x for x in os.listdir(BASE_DIR)]
-    
-    for x in dir_images:
-        image = imageio.imread((os.path.join(BASE_DIR, x)))
-        print(torch.from_numpy(image).float(), "\n")
-        tensor_image = torch.from_numpy(image).float() / 255
 
-        print(tensor_image)
-        break
+from torch.utils.data import (
+    Dataset,
+    DataLoader
+)
 
 
-"""
+class ImageDataset(nn.Module):
+    def __init__(self):
+        super(ImageDataset, self).__init__()
+
+
 def main():
     # read_image_as_tensor()
-    print(tf.__version__)
 
+    # image_dataset = ImageDataset()
+    
+    image_files = [file for file in os.listdir("64x64_SIGNS/train_signs/")]
+    another_files = [file for file in os.listdir("datasets/image_train/")]
+
+    test_files = [file for file in os.listdir("datasets/test_bacteria/")]
+
+    for x in test_files:
+        read_image = imageio.imread(os.path.join("datasets/test_bacteria", x))
+        if torch.from_numpy(read_image).float().shape == (64,64,3):
+            print(x)
+
+    for x in another_files:
+        read_image = imageio.imread(os.path.join("datasets/image_train/", x))
+        if torch.from_numpy(read_image).float().shape == (64,64,3):
+            print(x)
+
+    print("\n\n\n")
+    for pos, x in enumerate(image_files):
+        read_image = imageio.imread(os.path.join("64x64_SIGNS/train_signs/", x))
+        print(torch.from_numpy(read_image).float().shape)
+        
+        if pos == 100:
+            break
 
 if __name__ == "__main__":
     main()
