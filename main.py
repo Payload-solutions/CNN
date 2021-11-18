@@ -16,6 +16,20 @@ from torch.utils.data import (
 )
 
 
+"""
+Convert and resize the pixels of every image.
+the new images generated and converted, will be 
+stored in the temporal folder
+"""
+def image_handling():
+    pass
+
+
+
+
+
+
+
 class ImageDataset(nn.Module):
     def __init__(self):
         super(ImageDataset, self).__init__()
