@@ -110,21 +110,6 @@ class RunningMetrics:
         return self.S/float(self.N)
 
 
-
-# def match_image_dataset() -> Any:
-#     dataset = pd.read_csv(BASE_DATASET)
-#     files_names = sorted([x for x in os.listdir(BASE_DIR)])
-#     # targets = [int(re.search(r'\d{1,4}', x).group()) for x in files_names]
-#     print(dataset["quality_product"], "\n")
-#     targets = dataset["quality_product"].to_numpy()
-#     print(targets)
-
-
-# def load_dataset():
-#     dataset = pd.read_csv(BASE_DATASET)
-#     print(len(dataset))
-
-
 def main():
     image_dataset = ImageDataset(base_dir="datasets", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
 
