@@ -22,7 +22,7 @@ the new images generated and converted, will be
 stored in the temporal folder
 """
 def image_handling():
-    
+
     base_dir = "images/"
     new_dir = "temporal/"
     
