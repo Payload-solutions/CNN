@@ -83,7 +83,7 @@ class BacteriaDataset(Dataset):
         print(files)
         # self.transform = transform
         pprint(self.filenames)
-    """def __len__(self):
+    def __len__(self):
         return len(self.filenames)
 
     def __getitem__(self, item):
@@ -92,7 +92,7 @@ class BacteriaDataset(Dataset):
         if self.transform:
             image = self.transform(image)
         return image, self.targets[item]
-    """
+
 
 
 

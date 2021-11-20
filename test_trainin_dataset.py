@@ -85,7 +85,8 @@ class ImageDataset(Dataset):
         self.targets = self._load_dataset()
 
     def _load_dataset(self) -> list:
-        return pd.read_csv(self.dataset_base)["quality_product"].to_numpy()
+        dataset = pd.read_csv(self.dataset_base)["quality_product"].to_list()
+        return dataset
 
     def __len__(self):
         return len(self.files_names)
@@ -111,51 +112,56 @@ class RunningMetrics:
 
 
 def main():
-    try:
-        image_dataset = ImageDataset(base_dir="datasets", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
+    # try:
+    image_dataset = ImageDataset(base_dir="temp", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
 
-        dataloader = DataLoader(image_dataset, batch_size=8)
-        # print(len(image_dataset))
+    dataloader = DataLoader(image_dataset, batch_size=32)
+    # print(len(image_dataset))
 
-        net = ImageNet(32)
-        loss_fn = nn.NLLLoss()
-        optimizer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9)
+    net = ImageNet(32)
+    loss_fn = nn.NLLLoss()
+    optimizer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9)
 
-        num_epochs = 100
-
-        for inputs, targets in dataloader:
-            print(f"Inputs: {inputs} Targets: {targets}")
-            break
-
-    except Exception as e:
-        print(f"Problems calculating the values by:\n{str(e)}")
-
-    """for epoch in range(num_epochs):
-        print(f"{epoch}/{num_epochs}")
-        print("-"*15)
-
-        running_loss = RunningMetrics()
-        running_acc = RunningMetrics()
-
-        for inputs, targets  in dataloader:
-
-            optimizer.zero_grad()
-
-            outputs = net(inputs)
-
-            _, pred = torch.max(outputs, 1)
-
-            loss = loss_fn(outputs, targets)
-
-            loss.backward()
-            optimizer.step()
-
-            batch_size = inputs.size()[0]
-            running_loss.update(loss.item()*batch_size, batch_size)
-
-            running_acc.update(torch.sum(pred == targets).float(), batch_size)
+    num_epochs = 100
+    print(dataloader)
+    for inputs, targets in dataloader:
+        # print(f"Inputs: {inputs} Targets: {targets}")
+        # print(type(inputs))
+        print(type(targets))
+        print(targets)
+        # print(torch.tensor([targets]))
         
-        print(f"Loss {running_loss()}   Acc{running_acc()}" )"""
+    # for epoch in range(num_epochs):
+    #     print(f"{epoch}/{num_epochs}")
+    #     print("-"*15)
+
+    #     running_loss = RunningMetrics()
+    #     running_acc = RunningMetrics()
+
+    #     for inputs, targets  in dataloader:
+
+    #         optimizer.zero_grad()
+
+    #         outputs = net(inputs)
+
+    #         _, pred = torch.max(outputs, 1)
+
+    #         loss = loss_fn(outputs, targets)
+
+    #         loss.backward()
+    #         optimizer.step()
+
+    #         batch_size = inputs.size()[0]
+    #         running_loss.update(loss.item()*batch_size, batch_size)
+
+    #         running_acc.update(torch.sum(pred == targets).float(), batch_size)
+        
+    #     print(f"Loss {running_loss()}   Acc{running_acc()}")
+
+    # except Exception as e:
+    #     print(f"Problems calculating the values by:\n{str(e)}")
+
+    
 
 if __name__ == "__main__":
     main()
