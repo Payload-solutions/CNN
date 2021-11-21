@@ -12,6 +12,7 @@ imageio = "*"
 pandas = "*"
 numpy = "*"
 tensorflow = "*"
+scikit-learn = "*"
 
 [dev-packages]
 

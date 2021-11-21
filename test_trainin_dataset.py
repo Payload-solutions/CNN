@@ -1,3 +1,9 @@
+"""
+First implementation of neural network about bacteria growth
+using images
+"""
+
+
 import os
 from typing import (
     Any,
@@ -16,6 +22,8 @@ from torch.utils.data import (
 )
 import torchvision.transforms as transforms
 from torch import optim
+from sklearn.preprocessing import LabelEncoder
+
 
 
 class ImageNet(nn.Module):
@@ -82,7 +90,11 @@ class ImageDataset(Dataset):
         self.files_names = [os.path.join(path, f) for f in files]
         self.transform = transform
         self.dataset_base = dataset_base
-        self.targets = self._load_dataset()
+
+        # transforming strings categories from the yogurt classification
+        # using the LabelEncoder class from scikit-learn
+
+        self.targets = torch.as_tensor(LabelEncoder().fit_transform(self._load_dataset()))
 
     def _load_dataset(self) -> list:
         dataset = pd.read_csv(self.dataset_base)["quality_product"].to_list()
@@ -115,48 +127,41 @@ def main():
     # try:
     image_dataset = ImageDataset(base_dir="temp", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
 
-    dataloader = DataLoader(image_dataset, batch_size=32)
+    dataloader = DataLoader(image_dataset, batch_size=8)
     # print(len(image_dataset))
 
     net = ImageNet(32)
     loss_fn = nn.NLLLoss()
-    optimizer = optim.SGD(net.parameters(), lr=1e-3, momentum=0.9)
+    optimizer = optim.SGD(net.parameters(), lr=1e-2, momentum=0.9)
 
-    num_epochs = 100
-    print(dataloader)
-    for inputs, targets in dataloader:
-        # print(f"Inputs: {inputs} Targets: {targets}")
-        # print(type(inputs))
-        print(type(targets))
-        print(targets)
-        # print(torch.tensor([targets]))
+    num_epochs = 200
+    # print(dataloader)
+    for epoch in range(num_epochs):
+        print(f"{epoch}/{num_epochs}")
+        print("-"*15)
+
+        running_loss = RunningMetrics()
+        running_acc = RunningMetrics()
+
+        for inputs, targets  in dataloader:
+
+            optimizer.zero_grad()
+
+            outputs = net(inputs)
+
+            _, pred = torch.max(outputs, 1)
+
+            loss = loss_fn(outputs, targets)
+
+            loss.backward()
+            optimizer.step()
+
+            batch_size = inputs.size()[0]
+            running_loss.update(loss.item()*batch_size, batch_size)
+
+            running_acc.update(torch.sum(pred == targets).float(), batch_size)
         
-    # for epoch in range(num_epochs):
-    #     print(f"{epoch}/{num_epochs}")
-    #     print("-"*15)
-
-    #     running_loss = RunningMetrics()
-    #     running_acc = RunningMetrics()
-
-    #     for inputs, targets  in dataloader:
-
-    #         optimizer.zero_grad()
-
-    #         outputs = net(inputs)
-
-    #         _, pred = torch.max(outputs, 1)
-
-    #         loss = loss_fn(outputs, targets)
-
-    #         loss.backward()
-    #         optimizer.step()
-
-    #         batch_size = inputs.size()[0]
-    #         running_loss.update(loss.item()*batch_size, batch_size)
-
-    #         running_acc.update(torch.sum(pred == targets).float(), batch_size)
-        
-    #     print(f"Loss {running_loss()}   Acc{running_acc()}")
+        print(f"Loss {running_loss()}   Acc{running_acc()}")
 
     # except Exception as e:
     #     print(f"Problems calculating the values by:\n{str(e)}")
