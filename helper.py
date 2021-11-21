@@ -1,5 +1,5 @@
 
-# import warnings
+import re
 import os
 from PIL import (
     Image,
@@ -14,6 +14,7 @@ from torch.utils.data import (
     Dataset,
     DataLoader
 )
+from pprint import pprint
 import pandas as pd
 
 """
@@ -93,11 +94,27 @@ def load_numeric_dataset():
 
 
 
+def dataset_helper():
+
+    print("\n\t[*] Intializing converter to csv from image properties\n\n")
+    dataset = pd.read_csv("datasets/milk-properties.csv")
+    files_names = [x for x in os.listdir("temp/image_train/")]
+    pprint(files_names)
+    targets_num = [int(re.search(r'\d{1,4}', x).group()) for x in files_names]
+    # print(dataset)
+    # print(sorted(targets_num))
+
+    targets_num.sort()
+    dataset.iloc[targets_num[:]].to_csv("train-milk-properties.csv", index=False)
+    print("\n\t[*] Finished converter...\n\n")
+
+
+
 def main():
     # image_handling()
     # resize_images()
-    matching_shapes()
-
+    # matching_shapes()
+    dataset_helper()
     # files = [file for file in os.listdir("datasets/test_bacteria/")]
     # for x in files:
     #     print(torch.from_numpy(imageio.imread(os.path.join("datasets/test_bacteria/", x))).float().shape)
