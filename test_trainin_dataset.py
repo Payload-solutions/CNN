@@ -95,6 +95,7 @@ class ImageDataset(Dataset):
         # using the LabelEncoder class from scikit-learn
 
         self.targets = torch.as_tensor(LabelEncoder().fit_transform(self._load_dataset()))
+        # self.targets = self._load_dataset()
 
     def _load_dataset(self) -> list:
         dataset = pd.read_csv(self.dataset_base)["quality_product"].to_list()
@@ -125,7 +126,7 @@ class RunningMetrics:
 
 def main():
     # try:
-    image_dataset = ImageDataset(base_dir="temp", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
+    image_dataset = ImageDataset(base_dir="datasets/temp", split="train" ,dataset_base=BASE_DATASET, transform=transforms.ToTensor())
 
     dataloader = DataLoader(image_dataset, batch_size=8)
     # print(len(image_dataset))
@@ -136,6 +137,11 @@ def main():
 
     num_epochs = 200
     # print(dataloader)
+    """for inputs, targets in dataloader:
+        print(type(inputs))
+        print(type(targets))
+        break
+    """
     for epoch in range(num_epochs):
         print(f"{epoch}/{num_epochs}")
         print("-"*15)
@@ -151,6 +157,8 @@ def main():
 
             _, pred = torch.max(outputs, 1)
 
+            # outputs = outputs.type(torch.LongTensor)
+            # inputs = inputs.type(torch.LongTensor)
             loss = loss_fn(outputs, targets)
 
             loss.backward()
