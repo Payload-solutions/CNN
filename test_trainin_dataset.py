@@ -143,8 +143,8 @@ def main():
         break
     """
     for epoch in range(num_epochs):
-        print(f"{epoch}/{num_epochs}")
-        print("-"*15)
+        # print(f"{epoch}/{num_epochs}")
+        # print("-"*15)
 
         running_loss = RunningMetrics()
         running_acc = RunningMetrics()
@@ -169,8 +169,10 @@ def main():
 
             running_acc.update(torch.sum(pred == targets).float(), batch_size)
         
-        print(f"Loss {running_loss()}   Acc{running_acc()}")
+        # print(f"Loss {running_loss()}   Acc{running_acc()}")
 
+
+    torch.save(net.state_dict(), "model_trained/training.json")
     # except Exception as e:
     #     print(f"Problems calculating the values by:\n{str(e)}")
 
