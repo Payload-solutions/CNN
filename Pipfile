@@ -4,15 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-torch = "*"
+torch = "~=1.10.0"
 torchvision = "*"
 torchaudio = "*"
 pynvim = "*"
-imageio = "*"
+imageio = "~=2.10.3"
 pandas = "*"
 numpy = "*"
 tensorflow = "*"
+<<<<<<< HEAD
+Pillow = "~=8.4.0"
+=======
 scikit-learn = "*"
+>>>>>>> b1db53d514cfff42b4117e17ceec4569ef7507ab
 
 [dev-packages]
 

@@ -1,7 +1,11 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< HEAD
+            "sha256": "47d5328ff42c90734e2b0848cc07af61282ab541e4f57558aa4a517192c4a7cc"
+=======
             "sha256": "4cf2546185278ae3c89bc06b5cc04127756f66b08c579a66ce8ea88c6d58ce3e"
+>>>>>>> b1db53d514cfff42b4117e17ceec4569ef7507ab
         },
         "pipfile-spec": 6,
         "requires": {
@@ -231,11 +235,19 @@
         },
         "imageio": {
             "hashes": [
+<<<<<<< HEAD
+                "sha256:68457947e29c0341f12ff459d63019e386bf4dadc38c11ffa15941fe6d55f40e",
+                "sha256:f3f6e9a73d62f12348f098364219f4fc64462760bc07abfe16d14db0e4974845"
+            ],
+            "index": "pypi",
+            "version": "==2.10.5"
+=======
                 "sha256:73e53bbf21777173232cd7a1c66361516b58cd09d4828a10dcfe83bb14c2b187",
                 "sha256:87e43b7553286d2eff1806aa30d5e72b30ce2cfb356bc9a2f13466063d2e1259"
             ],
             "index": "pypi",
             "version": "==2.11.1"
+>>>>>>> b1db53d514cfff42b4117e17ceec4569ef7507ab
         },
         "importlib-metadata": {
             "hashes": [
@@ -244,6 +256,8 @@
             ],
             "markers": "python_version < '3.10'",
             "version": "==4.8.2"
+<<<<<<< HEAD
+=======
         },
         "joblib": {
             "hashes": [
@@ -252,6 +266,7 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==1.1.0"
+>>>>>>> b1db53d514cfff42b4117e17ceec4569ef7507ab
         },
         "keras": {
             "hashes": [
@@ -443,7 +458,7 @@
                 "sha256:e3dacecfbeec9a33e932f00c6cd7996e62f53ad46fbe677577394aaa90ee419a",
                 "sha256:eb9fc393f3c61f9054e1ed26e6fe912c7321af2f41ff49d3f83d05bacf22cc78"
             ],
-            "markers": "python_version >= '3.6'",
+            "index": "pypi",
             "version": "==8.4.0"
         },
         "protobuf": {
@@ -558,6 +573,15 @@
             "markers": "python_version >= '3.6'",
             "version": "==4.7.2"
         },
+<<<<<<< HEAD
+        "setuptools": {
+            "hashes": [
+                "sha256:94ee891f4759150cded601a6beb6b08400413aefd0267b692f3f8c6e0bb238e7",
+                "sha256:fb537610c2dfe77b5896e3ee53dd53fbdd9adc48076c8f28cee3a30fb59a5038"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==59.1.1"
+=======
         "scikit-learn": {
             "hashes": [
                 "sha256:02aee3b257617da0ec98dee9572b10523dc00c25b68c195ddf100c1a93b1854b",
@@ -618,6 +642,7 @@
             ],
             "markers": "python_version < '3.11' and python_version >= '3.7'",
             "version": "==1.7.2"
+>>>>>>> b1db53d514cfff42b4117e17ceec4569ef7507ab
         },
         "six": {
             "hashes": [
