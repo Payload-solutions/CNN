@@ -169,7 +169,7 @@ def main():
 
             running_acc.update(torch.sum(pred == targets).float(), batch_size)
         
-        # print(f"Loss {running_loss()}   Acc{running_acc()}")
+        print(f"Loss {running_loss()}   Acc{running_acc()}")
 
 
     torch.save(net.state_dict(), "model_trained/training.json")
