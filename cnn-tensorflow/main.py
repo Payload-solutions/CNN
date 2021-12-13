@@ -60,7 +60,7 @@ def main():
 
     model.fit(train_image, train_labels, batch_size=64, epochs=10)
 
-    print(model.evalutate(test_images, test_labels, verbose=0))
+    print(model.evaluate(test_images, test_labels, verbose=0))
 
 if __name__ == "__main__":
     main()
