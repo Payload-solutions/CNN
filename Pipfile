@@ -15,6 +15,7 @@ tensorflow = "*"
 Pillow = "~=8.4.0"
 scikit-learn = "*"
 matplotlib = "*"
+scikit-image = "*"
 
 [dev-packages]
 
