@@ -32,6 +32,19 @@ if __name__ == "__main__":
 
         new_image = nd.convolve(image_gray, kernel)
 
-        print(new_image)
-        print(new_image.shape)
+        # print(new_image)
+        # print(new_image.shape)
+
+        fix, axes = plt.subplots(1,2, figsize=(15,10))
+        axes[0].imshow(image_gray, cmap=plt.cm.gray)
+        axes[0].set_title('Original')
+        axes[0].axis('off')
+
+        axes[1].imshow(new_image, cmap=plt.cm.gray)
+        axes[1].set_title('Convolution')
+        axes[1].axis('off')
+
+        plt.show()
+
+
         break
