@@ -1,5 +1,5 @@
 """
-:author Arturo Negreiros
+Simply classification problem solving
 """
 
 # utilities for deep model
@@ -17,14 +17,13 @@ from tensorflow.keras.layers import (
 )
 from tensorflow.keras.datasets import cifar10
 
-# for datacleaning
+# for data-cleaning
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def defining_parameters():
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-
 
     # datacleaning
     ## first of all, reduce the dimensionship
@@ -44,6 +43,55 @@ def defining_parameters():
     (x_train, x_valid) = x_train[5000:], x_train[:5000]
     (y_train, y_valid) = y_train[5000:], y_train[:5000]
 
+
+    # defining model
+    filter_base = 32
+    w_regularizers = 1e-4
+
+    ## building model
+    model = Sequential()
+    
+    # 1 convolution
+    model.add(Conv2D(filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers), input_shape=x_train.shape[1:]))
+    model.add(Activation('relu'))
+    
+    # 2 convolution
+    model.add(Conv2D(filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.2))
+
+
+    # 3 convolution
+    # this convolution, the layer gonna be more deep
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.2))
+
+    # 4 convolution
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.3))
+
+    # 5 convolution
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+
+
+    # 6 convolution
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.4))
+
+
+    ## Classification - flatten
+    model.add(Flatten())
+    model.add(Dense(num_classes, activation='softmax'))
+
+    
+    print(model.summary())
 
 
 def main():
