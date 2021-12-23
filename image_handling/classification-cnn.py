@@ -91,7 +91,17 @@ def defining_parameters():
     model.add(Dense(num_classes, activation='softmax'))
 
     
-    print(model.summary())
+    model.summary()
+
+
+    # compiling the model
+    model.compile(loss='categorical_crossentropy', optimizer='rmsprop', 
+            metrics=['accuracy'])
+
+    hist = model.fit(x_train, y_train, batch_size=32, epochs=100, validation_data=(x_valid, y_valid), verbose=2, shuffle=True)
+
+    print(hist)
+
 
 
 def main():
