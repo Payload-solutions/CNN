@@ -4,7 +4,12 @@
 
 import os
 import tensorflow as tf
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import (
+    ImageDataGenerator,
+    array_to_img,
+    img_to_array,
+    load_img
+)
 
 
 # image dir
