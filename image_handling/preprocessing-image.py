@@ -13,8 +13,8 @@ from tensorflow.keras.preprocessing.image import (
 import matplotlib.pyplot as plt
 
 # image dir
-BASE_DIR = "../datasets/temp/image_train/"
-NEW_DIR = ""
+BASE_DIR = "../datasets/temp/image_test/"
+NEW_DIR = "../model_images/test/"
 
 def image_handler():
 
@@ -28,40 +28,25 @@ def image_handler():
             fill_mode='nearest',
             brightness_range=[0.4, 1.5])
     
-    
+    # for this step, we gonna make several changes
+    # in the image dataset, first at all in the train set
+    # the goal is the implementation of data augmentation
+    target_indicator = 529
     for x in files:
 
         img = load_img(BASE_DIR+x)
-        print(type(img))
         img = img_to_array(img)
-        print(img.shape)
-
         img = img.reshape((1,)+img.shape)
-        print(img.shape)
-
-
         counter = 0
-        
         
         for batch in datage.flow(img, batch_size=2):
             counter += 1
-            # print(batch)
-            #print(len(batch))
             img_plot = array_to_img(batch[0])
-            # print(dir(img_plot))
-            # plt.figure(1)
-            # plt.imshow(img_plot)
-            # print(type(img_plot))
-            # plt.show()
 
-            img_plot.save(f"../wherever/wherever_{counter}.png")
-            
-
-            if counter == 9:
-                break
-            
-        break        
-
+            img_plot.save(f"{NEW_DIR}test_{target_indicator}.png")
+            target_indicator += 1
+            if counter == 6:
+                break        
 
 def watching_shapes():
     
@@ -76,8 +61,8 @@ def watching_shapes():
 
 
 def main():
-    # image_handler()
-    watching_shapes()
+    image_handler()
+    # watching_shapes()
 
 if __name__ == "__main__":
     main()
