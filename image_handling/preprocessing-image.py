@@ -2,6 +2,10 @@
 # keep in mind, that all this test gonna be implemented
 # in the real dataset image
 
+# for this step, we gonna make several changes
+# in the image dataset, first at all in the train set
+# the goal is the implementation of data augmentation
+
 import os
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import (
@@ -14,8 +18,8 @@ import matplotlib.pyplot as plt
 
 # image dir
 BASE_DIR = "../datasets/temp/image_test/"
-NEW_DIR = "../model_images/test/"
-
+NEW_DIR = "../model_images/train/"
+#  NEW_DIR = "../model_images/train/"
 def image_handler():
 
     files = [x for x in os.listdir(BASE_DIR)]
@@ -28,9 +32,7 @@ def image_handler():
             fill_mode='nearest',
             brightness_range=[0.4, 1.5])
     
-    # for this step, we gonna make several changes
-    # in the image dataset, first at all in the train set
-    # the goal is the implementation of data augmentation
+    
     target_indicator = 529
     for x in files:
 
@@ -43,26 +45,29 @@ def image_handler():
             counter += 1
             img_plot = array_to_img(batch[0])
 
-            img_plot.save(f"{NEW_DIR}test_{target_indicator}.png")
+            img_plot.save(f"{NEW_DIR}train_{target_indicator}.png")
             target_indicator += 1
             if counter == 6:
                 break        
 
 def watching_shapes():
     
-    list_values = [x for x in os.listdir("../wherever")]
+    list_values = [x for x in os.listdir(NEW_DIR)]
 
-    for x in list_values:
+    for i, x in enumerate(list_values):
 
-        img = load_img("../wherever/"+x)
+        img = load_img(f"{NEW_DIR}{x}")
         img = img_to_array(img)
         print(img.shape)
+
+        if x == 25:
+            break
 
 
 
 def main():
-    image_handler()
-    # watching_shapes()
+    # image_handler()
+    watching_shapes()
 
 if __name__ == "__main__":
     main()
