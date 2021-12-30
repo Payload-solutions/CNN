@@ -62,5 +62,13 @@ def main():
 
     print(model.evaluate(test_images, test_labels, verbose=0))
 
+
+    # if this metric not start to growth, stop training
+    # this si influenced by the training
+    early = tf.keras.callbacks.EarlyStopping(monitor="accuracy", patience=1)
+
+    model.fit(train_image, train_labels, batch_size=64,callbacks=[early],epochs=10)
+
+
 if __name__ == "__main__":
     main()
