@@ -2,6 +2,13 @@
 Simply classification problem solving
 """
 
+
+"""
+This is the kind of typically architecture for neural networks
+"""
+
+
+
 # utilities for deep model
 from tensorflow import keras
 from tensorflow.keras.utils import to_categorical
@@ -17,6 +24,7 @@ from tensorflow.keras.layers import (
     BatchNormalization
 )
 from tensorflow.keras.datasets import cifar10
+from tensorflow.keras import optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import (
     ModelCheckpoint
@@ -135,15 +143,29 @@ def defining_parameters():
         horizontal_flip=True,
         vertical_flip=True)
 
-    from tensorflow.keras import optimizers
+    
     # compiling the model
-    model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam, 
+    model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam(), 
             metrics=['accuracy'])
 
-    hist = model.fit(x_train, y_train, batch_size=32, epochs=100, validation_data=(x_valid, y_valid), verbose=2, shuffle=True)
+    # hist = model.fit(x_train, y_train, batch_size=32, epochs=100, validation_data=(x_valid, y_valid), verbose=2, shuffle=True)
+    checkpoint = ModelCheckpoint("my_best.hdf5", verbose=1, save_best_only=True)
+    hist = model.fit(datagen.flow(x_train, y_train), 
+        batch_size=128,
+        callbacks=[checkpoint],
+        steps_per_epoch=x_train.shape[0]//128,
+        epochs=120, 
+        validation_data=(x_valid, y_valid), 
+        verbose=2,
+        shuffle=True)
+    # print(hist)
 
-    print(hist)
 
+    plt.plot(hist.history["accuracy"], label="train")
+    plt.plot(hsit.history["val_accuracy"], label="validation")
+
+    plt.legend()
+    plt.show()
 
 
 def main():
