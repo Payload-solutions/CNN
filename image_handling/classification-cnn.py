@@ -13,9 +13,15 @@ from tensorflow.keras.layers import (
     Flatten, 
     Dense, 
     Dropout,
-    Activation
+    Activation,
+    BatchNormalization
 )
 from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import (
+    ModelCheckpoint
+)
+
 
 # for data-cleaning
 import numpy as np
@@ -50,73 +56,93 @@ def defining_parameters():
     y_train = to_categorical(y_train, num_classes)
     y_test = to_categorical(y_test, num_classes)
 
-    # print(x_train)
-    # print(y_train)
+    # Implementing of Normalization
+
+    mean = np.mean(x_train)
+    std = np.std(x_train)
+
+    x_train = (x_train - mean) / (std + 1e-7)
+    x_test = (x_test - mean) / (std + 1e-7)
 
     # another good practice it's split the set of dataset
-    ## trainin, test and validation
+    # trainin, test and validation
 
-    # (x_train, x_valid) = x_train[5000:], x_train[:5000]
-    # (y_train, y_valid) = y_train[5000:], y_train[:5000]
+    (x_train, x_valid) = x_train[5000:], x_train[:5000]
+    (y_train, y_valid) = y_train[5000:], y_train[:5000]
 
 
-    # # defining model
-    # filter_base = 32
-    # w_regularizers = 1e-4
+    # defining model
+    filter_base = 32
+    w_regularizers = 1e-4
 
-    # ## building model
-    # model = Sequential()
+    ## building model
+    model = Sequential()
+
+    # Architectura
+    # each architecture layer, we gonna add 
+    # a normalization layer.
     
-    # # 1 convolution
-    # model.add(Conv2D(filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers), input_shape=x_train.shape[1:]))
-    # model.add(Activation('relu'))
+    # 1 convolution
+    model.add(Conv2D(filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers), input_shape=x_train.shape[1:]))
+    model.add(Activation('relu'))
+    model.add(BatchNormalization())
     
-    # # 2 convolution
-    # model.add(Conv2D(filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
-    # model.add(Activation('relu'))
-    # model.add(MaxPooling2D(pool_size=(2,2)))
-    # model.add(Dropout(0.2))
+    # 2 convolution
+    model.add(Conv2D(filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.2))
 
 
-    # # 3 convolution
-    # # this convolution, the layer gonna be more deep
-    # model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
-    # model.add(Activation('relu'))
-    # model.add(Dropout(0.2))
+    # 3 convolution
+    # this convolution, the layer gonna be more deep
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
 
-    # # 4 convolution
-    # model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
-    # model.add(Activation('relu'))
-    # model.add(MaxPooling2D(pool_size=(2,2)))
-    # model.add(Dropout(0.3))
+    # 4 convolution
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.3))
 
-    # # 5 convolution
-    # model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
-    # model.add(Activation('relu'))
+    # 5 convolution
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(BatchNormalization())
+
+    # 6 convolution
+    model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
+    model.add(Activation('relu'))
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.4))
 
 
-    # # 6 convolution
-    # model.add(Conv2D(2*filter_base, kernel_size=(3,3), padding='same', kernel_regularizer=regularizers.l2(w_regularizers)))
-    # model.add(Activation('relu'))
-    # model.add(MaxPooling2D(pool_size=(2,2)))
-    # model.add(Dropout(0.4))
-
-
-    # ## Classification - flatten
-    # model.add(Flatten())
-    # model.add(Dense(num_classes, activation='softmax'))
+    ## Classification - flatten
+    model.add(Flatten())
+    model.add(Dense(num_classes, activation='softmax'))
 
     
-    # model.summary()
+    model.summary()
 
+    datagen = ImageDataGenerator(rotation_range=15,
+        width_shift_range=0.1,
+        height_shift_range=0.1,
+        horizontal_flip=True,
+        vertical_flip=True)
 
-    # # compiling the model
-    # model.compile(loss='categorical_crossentropy', optimizer='rmsprop', 
-    #         metrics=['accuracy'])
+    from tensorflow.keras import optimizers
+    # compiling the model
+    model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam, 
+            metrics=['accuracy'])
 
-    # hist = model.fit(x_train, y_train, batch_size=32, epochs=100, validation_data=(x_valid, y_valid), verbose=2, shuffle=True)
+    hist = model.fit(x_train, y_train, batch_size=32, epochs=100, validation_data=(x_valid, y_valid), verbose=2, shuffle=True)
 
-    # print(hist)
+    print(hist)
 
 
 
