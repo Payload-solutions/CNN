@@ -16,6 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+
 def main():
     (train_image, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
@@ -58,17 +59,39 @@ def main():
         metrics=['accuracy']
     )
 
-    model.fit(train_image, train_labels, batch_size=64, epochs=10)
+    # model.fit(train_image, train_labels, batch_size=64, epochs=10)
 
     print(model.evaluate(test_images, test_labels, verbose=0))
 
 
     # if this metric not start to growth, stop training
     # this si influenced by the training
-    early = tf.keras.callbacks.EarlyStopping(monitor="accuracy", patience=1)
+    # early = tf.keras.callbacks.EarlyStopping(monitor="accuracy", patience=1)
 
-    model.fit(train_image, train_labels, batch_size=64,callbacks=[early],epochs=10)
+    checkpoint = tf.keras.callbacks.ModelCheckpoint(filepath="convolutional_weights.hdf5", 
+        verbose=1, 
+        monitor="accuracy", 
+        save_best_only=True)
 
+    # model.fit(train_image, train_labels, batch_size=64,callbacks=[checkpoint],epochs=10)
+
+    # After training the model
+    # we gonna load the weights using the load_weights function
+    # without need to make another training again
+
+    model2 = model
+    model2.load_weights("./convolutional_weights.hdf5")
+
+    history_data = model2.evaluate(test_images, test_labels)
+
+
+    print(type(history_data))
+
+    print(dir(history_data))
+
+    
+    
+    print(f"In the previous training, we can be sure that the accuracy is the {float(history_data[1])*100}")
 
 if __name__ == "__main__":
     main()
