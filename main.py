@@ -11,12 +11,12 @@ def main():
     files = os.listdir(data_train)
     for x in files:
         src = re.findall(r'(.*)\.\d{1,5}.png', x)[0]
-        if src == "":
-            pass
-        elif src == "":
-            pass
+        if src == "Regular_yogurt":
+            shutil.move(data_train+x, new_dir+f"{src}/{x}")
+        elif src == "Low_fat_yogurt":
+            shutil.move(data_train+x, new_dir+f"{src}/{x}")
         else:
-            pass
+            shutil.move(data_train+x, new_dir+f"{src}/{x}")
         print(src)
     # shutil.move("verga.txtr", new_dir+"Non_fat_yogurt/")
     # FILE_PATH = "/train"
