@@ -6,18 +6,19 @@ import shutil
 
 
 def main():
-    data_train = "image_set/train/"
+    # data_train = "image_set/train/"
+    data_test = "image_set/test/"
     new_dir = "image_set/"
-    files = os.listdir(data_train)
+    files = os.listdir(data_test)
     for x in files:
         src = re.findall(r'(.*)\.\d{1,5}.png', x)[0]
         if src == "Regular_yogurt":
-            shutil.move(data_train+x, new_dir+f"{src}/{x}")
+            shutil.move(data_test+x, new_dir+f"{src}/{x}")
         elif src == "Low_fat_yogurt":
-            shutil.move(data_train+x, new_dir+f"{src}/{x}")
+            shutil.move(data_test+x, new_dir+f"{src}/{x}")
         else:
-            shutil.move(data_train+x, new_dir+f"{src}/{x}")
-        print(src)
+            shutil.move(data_test+x, new_dir+f"{src}/{x}")
+    print("Done!!!")
     # shutil.move("verga.txtr", new_dir+"Non_fat_yogurt/")
     # FILE_PATH = "/train"
     # train_path = FILE_PATH + "train"
