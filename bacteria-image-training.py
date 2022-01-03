@@ -134,7 +134,7 @@ def defining_model() -> Any:
 
     # classification flatten
     model.add(Flatten())
-    model.add(Dense(2, activation="softmax"))
+    model.add(Dense(3, activation="softmax"))
     model.summary()
 
     return model
